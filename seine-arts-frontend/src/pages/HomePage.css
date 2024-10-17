@@ -1,0 +1,60 @@
+.home-container {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  header {
+    background-color: #f1f1f1;
+    padding: 40px 20px;
+    margin-bottom: 40px;
+  }
+  
+  h1 {
+    color: #1C75BC;
+    font-size: 36px;
+    margin-bottom: 20px;
+  }
+  
+  .services-intro h2 {
+    color: #F3903F;
+    font-size: 30px;
+  }
+  
+  .services {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .service-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    width: 200px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .service-card h3 {
+    color: #1C75BC;
+  }
+  
+  .service-card p {
+    color: #666;
+  }
+  
+  .cta-button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #1C75BC;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+  }
+  
+  .cta-button:hover {
+    background-color: #F3903F;
+  }
+  

@@ -1,0 +1,43 @@
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #ffffff;
+  color: #333333;
+  padding: 20px;
+  text-align: center; /* Center content */
+}
+
+h1 {
+  color: #1C75BC; /* Brand color */
+}
+
+p {
+  font-size: 18px;
+}
+
+/* Navbar styling */
+nav {
+  background-color: #1C75BC;
+  padding: 10px 20px;
+  color: white;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  justify-content: space-around;
+}
+
+nav ul li {
+  display: inline-block;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  padding: 10px 20px;
+}
+
+nav ul li a:hover {
+  background-color: #F3903F;
+  border-radius: 5px;
+}
