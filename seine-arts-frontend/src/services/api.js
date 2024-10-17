@@ -1,13 +1,15 @@
 import axios from 'axios';
 
-const API = axios.create({ baseURL: 'https://your-backend-api-url.com/api' });
+// Use the environment variable for the API URL
+const API_BASE_URL = process.env.REACT_APP_API_URL; // No need for fallback
 
-export const postJob = async (jobDetails) => {
-  const { data } = await API.post('/jobs', jobDetails);
-  return data;
-};
-
-export const processPayment = async (paymentDetails) => {
-  const { data } = await API.post('/payments', paymentDetails);
-  return data;
+// Example function to get portfolios
+export const getPortfolios = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/api/portfolios`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching portfolios:', error);
+    throw error;
+  }
 };
