@@ -1,23 +1,28 @@
 const express = require('express');
-const connectDB = require('./config/db');
+const cors = require('cors');
 const dotenv = require('dotenv');
+const contentfulRoutes = require('./routes/contentfulRoutes');
 
 // Load environment variables from .env file
-dotenv.config();  // Ensure this is at the top before any other code
+dotenv.config();
 
 const app = express();
 
-// Connect to MongoDB
-connectDB();
+// Enable CORS for frontend requests
+app.use(cors({
+  origin: 'https://seine-arts.vercel.app/',  // Replace with your frontend URL (e.g., Vercel URL)
+  methods: ['GET', 'POST'],
+  credentials: true,
+}));
 
-// Middleware
+// Use JSON for API responses
 app.use(express.json());
 
-// Routes
-app.use('/api/auth', require('./routes/authRoutes'));
+// Set up routes for Contentful API
+app.use('/api', contentfulRoutes);
 
+// Start server on port from environment variables or default port 5000
 const PORT = process.env.PORT || 5000;
-
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
