@@ -2,38 +2,38 @@ const express = require('express');
 const { createClient } = require('contentful');
 const router = express.Router();
 
-// Create Contentful client using environment variables for space ID and access token
+// Log the environment variables for debugging (optional, for debugging purposes)
+console.log('Contentful Space ID:', process.env.CONTENTFUL_SPACE_ID);
+console.log('Contentful Access Token:', process.env.CONTENTFUL_ACCESS_TOKEN);
+
+// Create the Contentful client using environment variables
 const client = createClient({
   space: process.env.CONTENTFUL_SPACE_ID,
   accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
 });
 
-// Fetch portfolios from Contentful
+// Route to fetch portfolio items from Contentful
 router.get('/portfolios', async (req, res) => {
   try {
-    // Fetch all portfolio entries from Contentful
     const response = await client.getEntries({ content_type: 'portfolio' });
-    
-    // Send the fetched items as the response
-    res.json(response.items);
+    res.json(response.items); // Return the portfolio items in the response
   } catch (error) {
-    console.error('Error fetching content from Contentful:', error);
-    res.status(500).json({ message: 'Error fetching content from Contentful', error });
+    console.error('Error fetching portfolios from Contentful:', error);
+    res.status(500).json({ message: 'Error fetching portfolios from Contentful', error });
   }
 });
 
-// Optionally, you can add routes for other content types, such as services
+// Route to fetch service items from Contentful
 router.get('/services', async (req, res) => {
   try {
-    // Fetch all service entries from Contentful
     const response = await client.getEntries({ content_type: 'service' });
-    
-    // Send the fetched items as the response
-    res.json(response.items);
+    res.json(response.items); // Return the service items in the response
   } catch (error) {
-    console.error('Error fetching content from Contentful:', error);
+    console.error('Error fetching services from Contentful:', error);
     res.status(500).json({ message: 'Error fetching services from Contentful', error });
   }
 });
+
+// You can add additional routes here if necessary for other content types
 
 module.exports = router;
