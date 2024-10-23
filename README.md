@@ -1,233 +1,253 @@
-Here’s a **detailed README** for your **Seine Arts** project. It will help users, contributors, and developers understand how to set up, run, and contribute to the project.
-
----
-
-# **Seine Arts**
-
-Seine Arts is a platform where professionals offering services in **photography**, **videography**, **sound engineering**, **graphic design**, and **software engineering** can showcase their portfolios, connect with clients, and receive payments for their work. The platform allows admins to assign projects to professionals, while also handling payments.
-
-## **Table of Contents**
-- [Overview](#overview)
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Project Setup](#project-setup)
-  - [Backend Setup](#backend-setup)
-  - [Frontend Setup](#frontend-setup)
-- [Environment Variables](#environment-variables)
-- [Running the Application](#running-the-application)
-- [Deployment](#deployment)
-- [API Documentation](#api-documentation)
-- [Screenshots](#screenshots)
-- [Contributing](#contributing)
-- [License](#license)
-
----
+# **Seine Arts Platform**
 
 ## **Overview**
+Seine Arts is an all-in-one creative service platform where clients can request and book creative professionals for services like photography, videography, sound engineering, graphic design, and software engineering. The platform showcases portfolios of past work, allowing clients to browse through examples before making a booking. Professionals manage their own portfolios and work on projects assigned by the platform admin. Admins manage users, services, jobs, and payment workflows.
 
-Seine Arts is a platform that connects clients with professionals in creative fields, specifically:
-- Photography
-- Videography
-- Sound Engineering
-- Graphic Design
-- Software Engineering
-
-Admins manage project assignments, and the platform also provides a way to handle payments via **PayPal**. 
-
-## **Features**
-- **User Authentication**: Secure signup and login using JWT.
-- **Portfolio Management**: Professionals can upload portfolios to showcase their work.
-- **Project Management**: Admins can assign projects to professionals based on their portfolios.
-- **Payment Handling**: Payments are processed via PayPal integration.
-- **Responsive Design**: The frontend is fully responsive across devices.
-- **Role-Based Access**: Different functionality for clients, professionals, and admins.
+The platform consists of a **React frontend** hosted on **Vercel** and a **Node.js/Express backend** hosted on **Render**, connected to a **MongoDB database** hosted on **MongoDB Atlas**. The content, such as portfolios and services, is managed using **Contentful** (a headless CMS), and **PayPal** handles payment transactions.
 
 ---
 
-## **Tech Stack**
+## **Key Features**
 
-### **Backend**:
-- **Node.js**
-- **Express.js**
-- **MongoDB** (via **Mongoose**)
-- **JWT** for authentication
-- **PayPal SDK** for payment processing
-- **CORS** for cross-origin requests
+### **Role-Based Access**
+- **Client**:
+  - Can browse portfolios and services.
+  - Can request services and make payments.
+  - Can track their own projects through the client dashboard.
+  - Can update their personal profile.
 
-### **Frontend**:
-- **React.js** (via Create React App)
-- **Axios** for API calls
-- **React Router** for navigation
-- **CSS** for styling
+- **Professional**:
+  - Can view assigned jobs and update their status.
+  - Can manage their own portfolio items (add, edit, or remove).
+  - Can update personal profile information.
 
-### **Deployment**:
-- **Backend**: [Render](https://render.com)
-- **Frontend**: [Vercel](https://vercel.com)
-- **Database**: [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
+- **Admin**:
+  - Full platform management, including:
+    - Managing user roles (promote, demote, or delete users).
+    - Assigning jobs to professionals.
+    - Managing portfolios and service listings.
+    - Handling payments and viewing transactions.
 
----
+### **Portfolio Management**
+- **Admins** and **Professionals** can manage portfolios by adding or editing past work.
+- Portfolios are dynamically fetched from **Contentful** and displayed to clients.
 
-## **Project Setup**
+### **Service Request and Job Assignment**
+- Clients can request services by submitting a service request.
+- Admins assign jobs to professionals based on client requests.
 
-### **Backend Setup**
+### **Secure Payments**
+- The platform integrates **PayPal** to handle payments securely.
+- Payment records are stored and linked to service requests.
 
-1. **Clone the Repository**:
-   ```bash
-   git clone https://github.com/your-username/seine-arts-backend.git
-   cd seine-arts-backend
-   ```
-
-2. **Install Dependencies**:
-   ```bash
-   npm install
-   ```
-
-3. **Create `.env` File**:
-   Create a `.env` file in the root directory with the following variables:
-   ```plaintext
-   MONGO_URI=your-mongodb-connection-string
-   JWT_SECRET=your-jwt-secret
-   PAYPAL_CLIENT_ID=your-paypal-client-id
-   PAYPAL_SECRET=your-paypal-secret
-   ```
-
-4. **Start the Server**:
-   Run the server locally:
-   ```bash
-   npm start
-   ```
-   The backend will run on `http://localhost:5000`.
+### **Contentful CMS Integration**
+- Dynamic content such as portfolios and services is managed via **Contentful**, allowing non-developers to update the content without needing to code.
 
 ---
 
-### **Frontend Setup**
+## **Technology Stack**
 
-1. **Clone the Repository**:
-   ```bash
-   git clone https://github.com/your-username/seine-arts-frontend.git
-   cd seine-arts-frontend
-   ```
+### **Frontend** (React, hosted on Vercel)
+- **React.js**: UI framework for building interactive pages.
+- **React Router**: Handles client-side routing.
+- **Axios**: For making HTTP requests to the backend API.
+- **Contentful**: Headless CMS for managing content dynamically.
+- **Vercel**: Platform used for hosting the frontend.
 
-2. **Install Dependencies**:
-   ```bash
-   npm install
-   ```
+### **Backend** (Node.js & Express, hosted on Render)
+- **Node.js** & **Express.js**: Backend framework for handling API requests.
+- **MongoDB**: NoSQL database for storing user, project, and job data.
+- **Mongoose**: ORM for MongoDB.
+- **JWT**: Token-based authentication for user sessions.
+- **PayPal API**: For handling payments.
+- **Render**: Platform used for hosting the backend.
 
-3. **Create `.env` File**:
-   Create a `.env` file in the root directory with the following variable:
-   ```plaintext
-   REACT_APP_API_URL=http://localhost:5000
-   ```
-   Replace `http://localhost:5000` with the live backend URL if the backend is deployed.
+### **Database**
+- **MongoDB Atlas**: Cloud-based MongoDB for storing all platform data, including users, portfolios, jobs, and payments.
 
-4. **Start the Frontend**:
-   Run the frontend locally:
-   ```bash
-   npm start
-   ```
-   The frontend will run on `http://localhost:3000`.
+### **CMS**
+- **Contentful**: Used for managing portfolios and service descriptions via a user-friendly CMS interface.
 
 ---
 
-## **Environment Variables**
+## **Setup and Installation**
 
-### Backend `.env` File:
-```plaintext
-MONGO_URI=your-mongodb-connection-string
+### **Prerequisites**
+- **Node.js** installed locally.
+- **MongoDB Atlas** account for managing the database.
+- **Contentful** account for managing dynamic content.
+- **PayPal Developer Account** for API integration.
+
+### **1. Clone the Repository**
+```bash
+git clone https://github.com/your-username/Seine-Arts.git
+cd Seine-Arts
+```
+
+### **2. Backend Setup (Node.js/Express on Render)**
+
+#### **Navigate to the Backend Directory**:
+```bash
+cd seine-arts-backend
+```
+
+#### **Install Dependencies**:
+```bash
+npm install
+```
+
+#### **Set Up Environment Variables**:
+Create a `.env` file in the root of the backend (`seine-arts-backend`) with the following keys:
+
+```bash
+MONGO_URI=your-mongodb-uri
 JWT_SECRET=your-jwt-secret
 PAYPAL_CLIENT_ID=your-paypal-client-id
 PAYPAL_SECRET=your-paypal-secret
 ```
 
-### Frontend `.env` File:
-```plaintext
-REACT_APP_API_URL=http://localhost:5000
+#### **Run Backend Locally**:
+To test the backend locally, run:
+
+```bash
+npm start
 ```
 
-Make sure to configure these on the deployment platforms (Render for backend, Vercel for frontend).
+The backend will run on `http://localhost:5000`.
+
+#### **Deploy Backend to Render**:
+1. Push the code to your GitHub repository.
+2. In your Render dashboard:
+   - Create a new **Web Service**.
+   - Link it to the backend repository.
+   - Set environment variables in the Render dashboard (`MONGO_URI`, `JWT_SECRET`, `PAYPAL_CLIENT_ID`, etc.).
+   - Deploy the backend.
+
+### **3. Frontend Setup (React on Vercel)**
+
+#### **Navigate to the Frontend Directory**:
+```bash
+cd seine-arts-frontend
+```
+
+#### **Install Dependencies**:
+```bash
+npm install
+```
+
+#### **Set Up Environment Variables**:
+Create a `.env` file in the root of the frontend (`seine-arts-frontend`) with the following keys:
+
+```bash
+REACT_APP_API_URL=https://your-backend-url.onrender.com
+REACT_APP_CONTENTFUL_SPACE_ID=your-contentful-space-id
+REACT_APP_CONTENTFUL_ACCESS_TOKEN=your-contentful-access-token
+```
+
+#### **Run Frontend Locally**:
+To test the frontend locally, run:
+
+```bash
+npm start
+```
+
+The frontend will run on `http://localhost:3000`.
+
+#### **Deploy Frontend to Vercel**:
+1. Push the code to your GitHub repository.
+2. In your Vercel dashboard:
+   - Create a new project.
+   - Link it to the frontend repository.
+   - Set environment variables (`REACT_APP_API_URL`, `REACT_APP_CONTENTFUL_SPACE_ID`, `REACT_APP_CONTENTFUL_ACCESS_TOKEN`) in Vercel.
+   - Deploy the frontend.
 
 ---
 
-## **Running the Application**
+## **CMS Setup (Contentful)**
 
-To run the full-stack application locally, follow these steps:
+1. **Create Contentful Space**:
+   - Log in to Contentful and create a new space.
+   - Add content types for **Portfolio** and **Services**.
 
-1. **Start Backend**:
-   Run this in the backend directory:
-   ```bash
-   npm start
-   ```
+2. **Set Up Content Models**:
+   - **Portfolio**:
+     - Title (Text)
+     - Description (Rich Text)
+     - Images (Media)
+     - Category (Text)
+     - Date (Date)
+   
+   - **Services**:
+     - Title (Text)
+     - Description (Rich Text)
+     - Icon (Media)
 
-2. **Start Frontend**:
-   Run this in the frontend directory:
-   ```bash
-   npm start
-   ```
+3. **Add Content**:
+   - Populate your Contentful space with portfolios and services.
 
-Once both are running:
-- Frontend: `http://localhost:3000`
-- Backend: `http://localhost:5000`
-
-The frontend will communicate with the backend via the API endpoints defined in `REACT_APP_API_URL`.
-
----
-
-## **Deployment**
-
-### Backend Deployment (Render):
-1. Push your backend code to a GitHub repository.
-2. On Render, create a new Web Service and connect it to your GitHub repo.
-3. Set up environment variables on Render (`MONGO_URI`, `JWT_SECRET`, `PAYPAL_CLIENT_ID`, `PAYPAL_SECRET`).
-4. Deploy the service and grab the live backend URL.
-
-### Frontend Deployment (Vercel):
-1. Push your frontend code to a GitHub repository.
-2. On Vercel, create a new project and connect it to your GitHub repo.
-3. Set the environment variable `REACT_APP_API_URL` to the live backend URL from Render.
-4. Deploy the frontend.
+4. **Use Contentful API**:
+   - Use the Contentful **API** to fetch and display content dynamically in your React frontend.
 
 ---
 
-## **API Documentation**
+## **API Endpoints**
 
-Here is a brief overview of the available backend API routes.
+### **Authentication**:
+- **POST /api/auth/signup**: Register a new user.
+- **POST /api/auth/login**: Log in a user.
+- **POST /api/auth/logout**: Log out a user.
 
-### **Auth Routes**:
-- **POST** `/api/auth/signup`: Register a new user.
-- **POST** `/api/auth/login`: Log in an existing user.
+### **Users**:
+- **GET /api/users**: Get a list of users (Admin only).
+- **PUT /api/users/promote/:id**: Promote a user to admin (Admin only).
+- **DELETE /api/users/:id**: Delete a user (Admin only).
 
-### **Portfolio Routes**:
-- **GET** `/api/portfolios`: Fetch all portfolios.
-- **POST** `/api/portfolios`: Add a new portfolio (protected route).
+### **Portfolios**:
+- **GET /api/portfolios**: Fetch all portfolio items.
+- **POST /api/admin/portfolio**: Add a portfolio (Admin/Professional).
 
-### **Payment Routes**:
-- **POST** `/api/payments/create`: Create a new PayPal payment (protected route).
+### **Jobs**:
+- **GET /api/jobs**: Fetch all job assignments (Admin only).
+- **POST /api/jobs/assign**: Assign a job to a professional (Admin only).
 
-More routes can be added as the project grows.
+### **Payments**:
+- **POST /api/paypal/create-payment**: Create a PayPal payment.
+- **POST /api/paypal/execute-payment**: Execute a PayPal payment.
 
 ---
 
-## **Screenshots**
-![alt text](image.png), ![alt text](image-1.png)
+## **User Roles and Access**
+
+### **Clients**:
+- View portfolios, services, and submit requests.
+- Manage their own projects and profile.
+
+### **Professionals**:
+- View assigned jobs.
+- Manage their own portfolio.
+
+### **Admins**:
+- Full control over the platform.
+- Manage users, jobs, portfolios, and services.
 
 ---
 
-## **Contributing**
+## **Deployment Steps**
 
-Contributions are welcome! Please follow these steps:
+1. **Backend (Render)**:
+   - Ensure that environment variables are set in the Render dashboard.
+   - Link your Render service to the backend repository and deploy.
 
-1. **Fork the repository**.
-2. **Create a new feature branch** (`git checkout -b feature-branch`).
-3. **Commit your changes** (`git commit -m 'Add some feature'`).
-4. **Push to the branch** (`git push origin feature-branch`).
-5. **Create a pull request**.
+2. **Frontend (Vercel)**:
+   - Ensure that environment variables are set in Vercel.
+   - Link your Vercel project to the frontend repository and deploy.
 
 ---
 
 ## **License**
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License.
 
 ---
 
-This README provides a comprehensive guide for setting up, running, and deploying the **Seine Arts** project. Let me know if you need any further adjustments!
+## **Contributing**
+Contributions are welcome! Please open an issue or submit a pull request for major changes.
