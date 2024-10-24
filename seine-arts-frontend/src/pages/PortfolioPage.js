@@ -1,27 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { createClient } from 'contentful';
+import axios from 'axios';
+
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000'; // Fallback for local testing
 
 const PortfolioPage = () => {
   const [portfolios, setPortfolios] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  // Initialize Contentful client
-  const client = createClient({
-    space: process.env.REACT_APP_CONTENTFUL_SPACE_ID, // Your Contentful Space ID
-    accessToken: process.env.REACT_APP_CONTENTFUL_ACCESS_TOKEN, // Your Contentful Access Token
-  });
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch portfolio data from Contentful
     const fetchPortfolios = async () => {
       try {
-        const response = await client.getEntries({
-          content_type: 'portfolio', // This is your content type ID in Contentful
-        });
-        setPortfolios(response.items);
+        const { data } = await axios.get(`${API_BASE_URL}/api/portfolios`);
+        setPortfolios(data);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching portfolios:', error);
+        setError('Failed to fetch portfolios');
         setLoading(false);
       }
     };
@@ -29,31 +23,21 @@ const PortfolioPage = () => {
     fetchPortfolios();
   }, []);
 
-  if (loading) {
-    return <div>Loading portfolio...</div>;
-  }
+  if (loading) return <p>Loading portfolios...</p>;
+  if (error) return <p>{error}</p>;
 
   return (
     <div>
       <h1>Our Portfolio</h1>
-      <div className="portfolio-grid">
-        {portfolios.length === 0 ? (
-          <p>No portfolios available at the moment.</p>
-        ) : (
-          portfolios.map((portfolio) => (
-            <div key={portfolio.sys.id} className="portfolio-item">
-              <h2>{portfolio.fields.title}</h2>
-              <p>{portfolio.fields.description}</p>
-              {portfolio.fields.image && (
-                <img
-                  src={portfolio.fields.image.fields.file.url}
-                  alt={portfolio.fields.title}
-                />
-              )}
-            </div>
-          ))
-        )}
-      </div>
+      {portfolios.map((portfolio) => (
+        <div key={portfolio._id}>
+          <h2>{portfolio.title}</h2>
+          <p>{portfolio.description}</p>
+          {portfolio.images.map((image, index) => (
+            <img key={index} src={image} alt={portfolio.title} style={{ width: '200px' }} />
+          ))}
+        </div>
+      ))}
     </div>
   );
 };

@@ -1,42 +1,35 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const LoginPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000'; // Fallback for local testing
 
-  const handleLogin = async (e) => {
-    e.preventDefault(); // Prevents page reload
+const Login = () => {
+  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [error, setError] = useState(null);
 
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      // Send login request to the backend
-      const response = await axios.post('http://localhost:5000/api/auth/login', {
-        email,
-        password,
-      });
-      console.log('Login successful:', response.data);
-      // Store token or redirect user as needed
+      const { data } = await axios.post(`${API_BASE_URL}/api/users/login`, formData);
+      localStorage.setItem('token', data.token); // Store the token
+      alert('Login successful!');
     } catch (error) {
-      console.error('Error logging in:', error.response ? error.response.data : error.message);
+      setError('Invalid email or password');
     }
   };
 
   return (
-    <div className="login-container">
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}> {/* Ensure onSubmit is properly handled */}
-        <div className="form-group">
-          <label>Email</label>
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        </div>
-        <div className="form-group">
-          <label>Password</label>
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-        </div>
-        <button type="submit">Login</button> {/* Submit button */}
-      </form>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
+      <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
+      <button type="submit">Login</button>
+      {error && <p>{error}</p>}
+    </form>
   );
 };
 
-export default LoginPage;
+export default Login;

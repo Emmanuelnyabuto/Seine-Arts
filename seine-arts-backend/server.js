@@ -1,25 +1,25 @@
-require('dotenv').config(); // Load environment variables from .env
-
 const express = require('express');
-const contentfulRoutes = require('./routes/contentfulRoutes'); // Import contentful routes
+const cors = require('cors');
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+const contactRoutes = require('./routes/contactRoutes'); // Add this line
 
+dotenv.config();
 const app = express();
 
-// Middleware to parse incoming requests as JSON
+app.use(cors());
 app.use(express.json());
 
-// Routes for fetching content from Contentful
-app.use('/api/content', contentfulRoutes);
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+}).then(() => console.log('MongoDB Connected')).catch((err) => console.log(err));
 
-// Basic root route for health check
-app.get('/', (req, res) => {
-  res.send('Seine Arts Backend is running');
-});
+// Use the contact routes
+app.use('/api/contact', contactRoutes); // Add this line to use contact routes
 
-// Define the server port, using environment variable or default to 5000
 const PORT = process.env.PORT || 5000;
 
-// Start the server and listen on the defined port
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

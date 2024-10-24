@@ -3,40 +3,39 @@
   text-align: center;
 }
 
-h1 {
-  color: #1C75BC;
-  font-size: 36px;
-  margin-bottom: 20px;
-}
-
-p {
-  font-size: 18px;
-  margin-bottom: 30px;
-}
-
 .services-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(3, 1fr); /* Three columns */
+  grid-gap: 20px;
   justify-items: center;
 }
 
-.service-card {
-  background-color: #f8f9fa;
+.service-item {
+  background-color: #fff;
   border: 1px solid #ddd;
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 20px;
-  max-width: 300px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
 
-.service-card h2 {
-  color: #1C75BC;
-  font-size: 24px;
-  margin-bottom: 10px;
+.service-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
 }
 
-.service-card p {
-  font-size: 16px;
-  color: #555;
+h2 {
+  color: #1C75BC; /* Your brand color */
+}
+
+p {
+  color: #333;
+}
+
+/* Media query to make sure that on smaller screens it shows in one column */
+@media (max-width: 768px) {
+  .services-list {
+    grid-template-columns: 1fr; /* Stack on top of each other on smaller screens */
+  }
 }

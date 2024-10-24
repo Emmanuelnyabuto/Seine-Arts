@@ -1,47 +1,35 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const SignupPage = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000'; // Fallback for local testing
 
-  const handleSignup = async (e) => {
-    e.preventDefault(); // Prevents page reload
+const Signup = () => {
+  const [formData, setFormData] = useState({ name: '', email: '', password: '' });
+  const [error, setError] = useState(null);
 
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/signup', {
-        name,
-        email,
-        password,
-      });
-      console.log('Signup successful:', response.data);
-      // Redirect or store token as needed
+      await axios.post(`${API_BASE_URL}/api/users/signup`, formData);
+      alert('Signup successful!');
     } catch (error) {
-      console.error('Error signing up:', error.response ? error.response.data : error.message);
+      setError('Signup failed');
     }
   };
 
   return (
-    <div className="signup-container">
-      <h2>Sign Up</h2>
-      <form onSubmit={handleSignup}> {/* Ensure onSubmit is correctly handled */}
-        <div className="form-group">
-          <label>Name</label>
-          <input type="text" value={name} onChange={(e) => setName(e.target.value)} required />
-        </div>
-        <div className="form-group">
-          <label>Email</label>
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        </div>
-        <div className="form-group">
-          <label>Password</label>
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-        </div>
-        <button type="submit">Sign Up</button> {/* Submit button */}
-      </form>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <input type="text" name="name" placeholder="Name" onChange={handleChange} required />
+      <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
+      <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
+      <button type="submit">Sign Up</button>
+      {error && <p>{error}</p>}
+    </form>
   );
 };
 
-export default SignupPage;
+export default Signup;
