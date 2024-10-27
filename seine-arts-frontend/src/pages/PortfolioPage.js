@@ -1,45 +1,61 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000'; // Fallback for local testing
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
 const PortfolioPage = () => {
   const [portfolios, setPortfolios] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
+  const [selectedCategory, setSelectedCategory] = useState('Photography');
+  
   useEffect(() => {
     const fetchPortfolios = async () => {
       try {
-        const { data } = await axios.get(`${API_BASE_URL}/api/portfolios`);
+        const { data } = await axios.get(`${API_BASE_URL}/api/portfolio?category=${selectedCategory}`);
         setPortfolios(data);
-        setLoading(false);
       } catch (error) {
-        setError('Failed to fetch portfolios');
-        setLoading(false);
+        console.error('Error fetching portfolios', error);
       }
     };
 
     fetchPortfolios();
-  }, []);
-
-  if (loading) return <p>Loading portfolios...</p>;
-  if (error) return <p>{error}</p>;
+  }, [selectedCategory]);
 
   return (
     <div>
-      <h1>Our Portfolio</h1>
-      {portfolios.map((portfolio) => (
-        <div key={portfolio._id}>
-          <h2>{portfolio.title}</h2>
-          <p>{portfolio.description}</p>
-          {portfolio.images.map((image, index) => (
-            <img key={index} src={image} alt={portfolio.title} style={{ width: '200px' }} />
-          ))}
-        </div>
-      ))}
+      <h1>Portfolios</h1>
+      <div>
+        <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
+          <option value="Photography">Photography</option>
+          <option value="Videography">Videography</option>
+          <option value="Sound Engineering">Sound Engineering</option>
+          <option value="Graphic Design">Graphic Design</option>
+          <option value="Software Engineering">Software Engineering</option>
+        </select>
+      </div>
+
+      <div className="portfolio-list">
+        {portfolios.map((portfolio) => (
+          <div key={portfolio._id} className="portfolio-item">
+            <h2>{portfolio.title}</h2>
+            <p>{portfolio.description}</p>
+            <button onClick={() => handleOrderService(portfolio._id)}>Order Service</button>
+          </div>
+        ))}
+      </div>
     </div>
   );
+};
+
+// Handle ordering service for the selected portfolio
+const handleOrderService = async (portfolioId) => {
+  try {
+    const token = localStorage.getItem('authToken');
+    const config = { headers: { Authorization: `Bearer ${token}` } };
+    await axios.post(`${API_BASE_URL}/api/orders`, { portfolioId }, config);
+    alert('Service ordered successfully');
+  } catch (error) {
+    console.error('Error ordering service', error);
+  }
 };
 
 export default PortfolioPage;

@@ -1,54 +1,75 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 const AdminDashboard = () => {
-  const [users, setUsers] = useState([]);
+  const [professionals, setProfessionals] = useState([]);
+  const [portfolios, setPortfolios] = useState([]);
+  const [selectedProfessional, setSelectedProfessional] = useState('');
+  const [selectedPortfolio, setSelectedPortfolio] = useState('');
+  const [description, setDescription] = useState('');
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    // Fetch professionals and portfolios for assignment
+    const fetchData = async () => {
       try {
-        const token = localStorage.getItem('authToken'); // Retrieve token from localStorage
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/users`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setUsers(response.data);
+        const token = localStorage.getItem('authToken');
+        const config = { headers: { Authorization: `Bearer ${token}` } };
+        const professionalsData = await axios.get(`${API_BASE_URL}/api/users/professionals`, config);
+        const portfoliosData = await axios.get(`${API_BASE_URL}/api/portfolios`, config);
+        setProfessionals(professionalsData.data);
+        setPortfolios(portfoliosData.data);
       } catch (error) {
-        console.error('Error fetching users:', error);
+        console.error('Error fetching data', error);
       }
     };
 
-    fetchUsers();
+    fetchData();
   }, []);
+
+  const handleAssignJob = async () => {
+    try {
+      const token = localStorage.getItem('authToken');
+      const config = { headers: { Authorization: `Bearer ${token}` } };
+      const body = { professionalId: selectedProfessional, portfolioId: selectedPortfolio, description };
+
+      await axios.post(`${API_BASE_URL}/api/jobs/assign-job`, body, config);
+      setMessage('Job assigned successfully');
+    } catch (error) {
+      setMessage('Error assigning job');
+    }
+  };
 
   return (
     <div>
-      <h1>User Management</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user) => (
-            <tr key={user._id}>
-              <td>{user.name}</td>
-              <td>{user.email}</td>
-              <td>{user.role}</td>
-              <td>
-                {/* Add buttons for actions like promoting to admin or deleting users */}
-                <button>Delete</button>
-                <button>Promote to Admin</button>
-              </td>
-            </tr>
+      <h1>Admin Dashboard</h1>
+      <div>
+        <h2>Assign Job to Professional</h2>
+        <select onChange={(e) => setSelectedProfessional(e.target.value)} value={selectedProfessional}>
+          <option>Select Professional</option>
+          {professionals.map((pro) => (
+            <option key={pro._id} value={pro._id}>
+              {pro.name}
+            </option>
           ))}
-        </tbody>
-      </table>
+        </select>
+
+        <select onChange={(e) => setSelectedPortfolio(e.target.value)} value={selectedPortfolio}>
+          <option>Select Portfolio</option>
+          {portfolios.map((portfolio) => (
+            <option key={portfolio._id} value={portfolio._id}>
+              {portfolio.title}
+            </option>
+          ))}
+        </select>
+
+        <textarea placeholder="Job Description" onChange={(e) => setDescription(e.target.value)} value={description} />
+
+        <button onClick={handleAssignJob}>Assign Job</button>
+        {message && <p>{message}</p>}
+      </div>
     </div>
   );
 };
