@@ -1,146 +1,111 @@
-/* Container for the services section */
+/* ServicesPage.css */
+
 .services-container {
-  padding: 60px 20px;
+  padding: 50px 20px;
   text-align: center;
-  background-image: url('/images/background.jpg'); /* Replace with your chosen image */
-  background-size: cover; /* Ensures the image covers the entire section */
-  background-position: center;
-  background-attachment: fixed; /* Parallax effect */
-  color: white; /* Text is white for contrast */
-  position: relative; /* To allow the overlay */
+  background-color: #f9f9f9; /* Light background color for contrast */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Overlay to darken the background and make text readable */
-.services-container::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.4); /* Dark overlay */
-  z-index: 1; /* Ensure overlay is below the content */
-}
-
-/* Services title animation */
-h1 {
-  font-size: 3rem;
-  color: white;
+.services-title {
+  font-size: 2.5rem;
+  color: #1C75BC; /* Brand color */
   margin-bottom: 40px;
-  position: relative;
-  z-index: 2;
-  animation: fadeInTitle 1s ease-out forwards, slideInFromLeft 1s ease-out forwards;
+  animation: fadeIn 1.5s ease;
 }
 
-/* Animation for title fade-in effect */
-@keyframes fadeInTitle {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-/* Slide in animation */
-@keyframes slideInFromLeft {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-
-/* Services grid list */
 .services-list {
   display: grid;
   grid-template-columns: repeat(3, 1fr); /* Three columns */
-  grid-gap: 30px;
+  grid-gap: 20px;
   justify-items: center;
-  padding: 20px;
-  z-index: 2; /* Ensure content appears above overlay */
-  position: relative;
-  animation: fadeInContent 2s ease-in forwards; /* Animation for content */
-}
-
-/* Fade-in animation for content */
-@keyframes fadeInContent {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-/* Service item styling */
-.service-item {
-  background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent background */
-  border: 1px solid #ddd;
-  border-radius: 15px;
-  padding: 30px 20px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s, box-shadow 0.3s;
-  text-align: center;
   width: 100%;
-  max-width: 350px;
-  position: relative;
-  z-index: 2; /* To ensure items are above overlay */
+  max-width: 1200px;
 }
 
-/* Hover effect for service items */
+.service-item {
+  background-color: #ffffff; /* White background for card */
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: fadeInUp 1.5s ease both;
+}
+
 .service-item:hover {
-  transform: scale(1.05);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Deeper shadow on hover */
 }
 
-/* Service image styling */
 .service-image {
-  max-width: 100%;
-  height: auto;
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
   border-radius: 10px;
-  margin-bottom: 20px;
-}
-
-/* Heading for each service */
-h2 {
-  color: #1C75BC; /* Your brand color */
-  margin-bottom: 10px;
-  font-size: 1.8rem;
-}
-
-/* Paragraph and list styles */
-p, ul li {
-  color: #333;
-  font-size: 1rem;
-  line-height: 1.5;
   margin-bottom: 15px;
 }
 
+.service-item h2 {
+  color: #1C75BC; /* Brand color for titles */
+  font-size: 1.5rem;
+  margin: 10px 0;
+}
+
+.service-item p {
+  color: #333;
+  margin: 0 0 15px 0;
+}
+
+.service-item ul {
+  text-align: left;
+  padding: 0;
+  list-style-type: disc;
+  margin: 0;
+}
+
+.service-item ul li {
+  margin: 5px 0;
+  color: #555;
+  font-size: 0.95rem;
+}
+
 /* Media query for responsiveness */
+@media (max-width: 1024px) {
+  .services-list {
+    grid-template-columns: repeat(2, 1fr); /* Two columns on tablets */
+  }
+}
+
 @media (max-width: 768px) {
   .services-list {
-    grid-template-columns: 1fr; /* Stack the service items on smaller screens */
-  }
-
-  h1 {
-    font-size: 2.5rem;
+    grid-template-columns: 1fr; /* Single column on mobile */
   }
 }
 
-/* Adding entrance animation for service items */
-@keyframes slideUp {
-  0% {
-    transform: translateY(100%);
+/* Animations */
+@keyframes fadeIn {
+  from {
     opacity: 0;
+    transform: translateY(-10px);
   }
-  100% {
-    transform: translateY(0);
+  to {
     opacity: 1;
+    transform: translateY(0);
   }
 }
 
-.service-item {
-  animation: slideUp 1s ease-in-out forwards;
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

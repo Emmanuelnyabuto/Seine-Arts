@@ -1,3 +1,5 @@
+// ServicesPage.js
+
 import React from 'react';
 import './ServicesPage.css';
 
@@ -40,9 +42,9 @@ const services = [
     description: 'Creative designs that bring your ideas to life.',
     details: [
       'Logo Design',
+      'Brand Identity',
       'Marketing Materials',
-      'UI/UX Design',
-      'Packaging Design'
+      'Social Media Graphics'
     ],
     image: '/images/graphic_design.jpg',
   },
@@ -50,9 +52,9 @@ const services = [
     title: 'Software Engineering',
     description: 'Custom software solutions to meet your business needs.',
     details: [
-      'Web Development',
-      'Mobile App Development',
-      'API Integration',
+      'App Development',
+      'System Integration',
+      'Data Analysis',
       'Automation Solutions'
     ],
     image: '/images/software_engineering.jpg',
@@ -61,10 +63,10 @@ const services = [
     title: 'Web Development',
     description: 'End-to-end web development services for your digital needs.',
     details: [
-      'Full-Stack Development',
-      'E-commerce Solutions',
-      'Website Maintenance',
-      'SEO Optimization'
+      'Front-End Development',
+      'Back-End Development',
+      'eCommerce Solutions',
+      'Website Maintenance'
     ],
     image: '/images/web_development.jpg',
   },
@@ -73,7 +75,7 @@ const services = [
 const ServicesPage = () => {
   return (
     <div className="services-container">
-      <h1>Our Services</h1>
+      <h1 className="services-title">Our Services</h1>
       <div className="services-list">
         {services.map((service, index) => (
           <div className="service-item" key={index}>

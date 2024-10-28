@@ -5,6 +5,7 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import Profile from './pages/Profile';
+import ContactPage from './pages/ContactPage';
 import PortfolioPage from './pages/PortfolioPage';
 import AdminDashboard from './pages/AdminDashboard';
 import ClientDashboard from './pages/ClientDashboard';
@@ -35,6 +36,7 @@ const App = () => {
       <div>
         <Routes>
           <Route path="/" element={<HomePage />} /> {/* Home page */}
+          <Route path="/contact" element={<ContactPage />} /> {/* Contact page */}
           <Route path="/login" element={<LoginPage />} /> {/* Login page */}
           <Route path="/signup" element={<SignupPage />} /> {/* Signup page */}
           <Route path="/portfolios" element={<PortfolioPage />} /> {/* Portfolio page */}
