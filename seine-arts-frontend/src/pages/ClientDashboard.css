@@ -1,0 +1,62 @@
+/* ClientDashboard.css */
+
+.client-dashboard {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  max-width: 1200px;
+  margin: auto;
+  color: #333;
+}
+
+.dashboard-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #1C75BC;
+  text-align: center;
+}
+
+.dashboard-description {
+  text-align: center;
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+
+.order-section h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.service-select {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+}
+
+.order-button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  background-color: #1C75BC;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.order-button:hover {
+  background-color: #0f5a8c;
+}
+
+.order-success {
+  color: green;
+  margin-top: 10px;
+}
+
+.order-error {
+  color: red;
+  margin-top: 10px;
+}

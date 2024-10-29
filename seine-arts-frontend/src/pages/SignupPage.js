@@ -4,10 +4,10 @@ import { useNavigate } from 'react-router-dom';
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
-const Signup = () => {
+const SignupPage = ({ setUser }) => {
   const [formData, setFormData] = useState({ name: '', email: '', password: '', role: 'client' });
   const [error, setError] = useState(null);
-  const navigate = useNavigate(); // Hook for navigation
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -17,8 +17,11 @@ const Signup = () => {
     e.preventDefault();
     try {
       const response = await axios.post(`${API_BASE_URL}/api/users/signup`, formData);
-      alert('Signup successful!');
-      const { role } = response.data;
+      const { token, role } = response.data;
+      localStorage.setItem('authToken', token);
+      setUser(response.data);
+
+      // Redirect based on role
       if (role === 'admin') {
         navigate('/admin');
       } else if (role === 'professional') {
@@ -47,4 +50,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default SignupPage;

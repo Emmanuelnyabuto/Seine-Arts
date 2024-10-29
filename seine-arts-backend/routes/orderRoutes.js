@@ -10,32 +10,21 @@ router.post(
   '/',
   protect,
   asyncHandler(async (req, res) => {
-    const { orderItems, paymentMethod, totalPrice } = req.body;
+    const { service, subService } = req.body;
 
-    if (orderItems && orderItems.length === 0) {
+    if (!service || !subService) {
       res.status(400);
-      throw new Error('No order items');
-    } else {
-      const order = new Order({
-        user: req.user._id,
-        orderItems,
-        paymentMethod,
-        totalPrice,
-      });
-
-      const createdOrder = await order.save();
-      res.status(201).json(createdOrder);
+      throw new Error('Service and sub-service are required');
     }
-  })
-);
 
-// Get logged-in user's orders
-router.get(
-  '/myorders',
-  protect,
-  asyncHandler(async (req, res) => {
-    const orders = await Order.find({ user: req.user._id });
-    res.json(orders);
+    const order = new Order({
+      user: req.user._id,
+      service,
+      subService,
+    });
+
+    const createdOrder = await order.save();
+    res.status(201).json(createdOrder);
   })
 );
 

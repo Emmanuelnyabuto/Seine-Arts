@@ -11,6 +11,7 @@ const ProfilePage = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
+        setError(null); // Clear error before fetching
         const token = localStorage.getItem('authToken');
         const config = { headers: { Authorization: `Bearer ${token}` } };
         const { data } = await axios.get(`${API_BASE_URL}/api/users/profile`, config);
@@ -30,25 +31,56 @@ const ProfilePage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setError(null); // Clear any previous errors
       const token = localStorage.getItem('authToken');
       const config = { headers: { Authorization: `Bearer ${token}` } };
       await axios.put(`${API_BASE_URL}/api/users/profile`, formData, config);
       setMessage('Profile updated successfully');
+      setError(null); // Ensure the error message is cleared
     } catch (error) {
+      setMessage(''); // Clear success message if there's an error
       setError('Error updating profile');
     }
   };
 
   return (
-    <div>
+    <div className="contact-page">
       <h1>Profile</h1>
       <form onSubmit={handleSubmit}>
-        <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Name" required />
-        <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email" required />
-        <input type="password" name="password" onChange={handleChange} placeholder="New Password" />
+        <div>
+          <label htmlFor="name">Name:</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="password">New Password:</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            onChange={handleChange}
+          />
+        </div>
         <button type="submit">Save Profile</button>
-        {message && <p>{message}</p>}
-        {error && <p>{error}</p>}
+        {message && <p style={{ color: 'green' }}>{message}</p>}
+        {error && <p style={{ color: 'red' }}>{error}</p>}
       </form>
     </div>
   );

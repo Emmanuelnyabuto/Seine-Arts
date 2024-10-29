@@ -6,6 +6,15 @@ const serviceSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    description: {
+      type: String,
+      default: '',
+    },
+    price: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
     status: {
       type: String,
       required: true,
@@ -14,6 +23,10 @@ const serviceSchema = mongoose.Schema(
     professional: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
+    },
+    subServices: {
+      type: [String], // Array of strings for sub-services
+      default: [],
     },
   },
   {

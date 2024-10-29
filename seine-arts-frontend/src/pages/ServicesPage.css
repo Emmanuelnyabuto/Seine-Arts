@@ -74,6 +74,18 @@
   font-size: 0.95rem;
 }
 
+/* Links styling */
+.service-item a {
+  color: #1C75BC; /* Brand color */
+  text-decoration: none; /* Remove underline */
+  font-weight: bold;
+}
+
+.service-item a:hover {
+  text-decoration: underline; /* Underline on hover */
+  color: #F3903F; /* Change color on hover */
+}
+
 /* Media query for responsiveness */
 @media (max-width: 1024px) {
   .services-list {

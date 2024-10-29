@@ -4,72 +4,96 @@ import axios from 'axios';
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
 const AdminDashboard = () => {
-  const [professionals, setProfessionals] = useState([]);
-  const [portfolios, setPortfolios] = useState([]);
-  const [selectedProfessional, setSelectedProfessional] = useState('');
-  const [selectedPortfolio, setSelectedPortfolio] = useState('');
+  const [services, setServices] = useState([]);
+  const [selectedService, setSelectedService] = useState('');
   const [description, setDescription] = useState('');
-  const [message, setMessage] = useState('');
+  const [image, setImage] = useState(null);
+  const [uploadSuccess, setUploadSuccess] = useState('');
+  const [uploadError, setUploadError] = useState('');
 
+  // Fetch services on load
   useEffect(() => {
-    // Fetch professionals and portfolios for assignment
-    const fetchData = async () => {
+    const fetchServices = async () => {
       try {
-        const token = localStorage.getItem('authToken');
-        const config = { headers: { Authorization: `Bearer ${token}` } };
-        const professionalsData = await axios.get(`${API_BASE_URL}/api/users/professionals`, config);
-        const portfoliosData = await axios.get(`${API_BASE_URL}/api/portfolios`, config);
-        setProfessionals(professionalsData.data);
-        setPortfolios(portfoliosData.data);
+        const { data } = await axios.get(`${API_BASE_URL}/api/services`);
+        setServices(data);
+        console.log('Fetched services:', data); // Debugging line to confirm data
       } catch (error) {
-        console.error('Error fetching data', error);
+        console.error('Error fetching services', error);
       }
     };
 
-    fetchData();
+    fetchServices();
   }, []);
 
-  const handleAssignJob = async () => {
+  const handleFileChange = (e) => {
+    setImage(e.target.files[0]);
+  };
+
+  const handleUpload = async () => {
+    if (!selectedService) {
+      setUploadError('Please select a service category');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('service', selectedService);
+    formData.append('description', description);
+    formData.append('image', image);
+
     try {
       const token = localStorage.getItem('authToken');
-      const config = { headers: { Authorization: `Bearer ${token}` } };
-      const body = { professionalId: selectedProfessional, portfolioId: selectedPortfolio, description };
-
-      await axios.post(`${API_BASE_URL}/api/jobs/assign-job`, body, config);
-      setMessage('Job assigned successfully');
+      const config = { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' } };
+      await axios.post(`${API_BASE_URL}/api/portfolios/upload`, formData, config);
+      setUploadSuccess('Portfolio uploaded successfully');
+      setUploadError('');
+      setDescription('');
+      setImage(null);
+      setSelectedService('');
     } catch (error) {
-      setMessage('Error assigning job');
+      setUploadError('Error uploading portfolio. Please try again.');
+      console.error(error);
     }
   };
 
   return (
     <div>
       <h1>Admin Dashboard</h1>
+      <h2>Upload Portfolio</h2>
       <div>
-        <h2>Assign Job to Professional</h2>
-        <select onChange={(e) => setSelectedProfessional(e.target.value)} value={selectedProfessional}>
-          <option>Select Professional</option>
-          {professionals.map((pro) => (
-            <option key={pro._id} value={pro._id}>
-              {pro.name}
+        <label htmlFor="service">Service Category:</label>
+        <select
+          id="service"
+          value={selectedService}
+          onChange={(e) => setSelectedService(e.target.value)}
+        >
+          <option value="">Select a Service</option>
+          {services.map((service) => (
+            <option key={service._id} value={service._id}>
+              {service.name}
             </option>
           ))}
         </select>
-
-        <select onChange={(e) => setSelectedPortfolio(e.target.value)} value={selectedPortfolio}>
-          <option>Select Portfolio</option>
-          {portfolios.map((portfolio) => (
-            <option key={portfolio._id} value={portfolio._id}>
-              {portfolio.title}
-            </option>
-          ))}
-        </select>
-
-        <textarea placeholder="Job Description" onChange={(e) => setDescription(e.target.value)} value={description} />
-
-        <button onClick={handleAssignJob}>Assign Job</button>
-        {message && <p>{message}</p>}
       </div>
+
+      <div>
+        <label htmlFor="description">Description:</label>
+        <textarea
+          id="description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          placeholder="Portfolio description"
+        ></textarea>
+      </div>
+
+      <div>
+        <label htmlFor="image">Image:</label>
+        <input type="file" id="image" onChange={handleFileChange} />
+      </div>
+
+      <button onClick={handleUpload}>Upload Portfolio</button>
+      {uploadSuccess && <p style={{ color: 'green' }}>{uploadSuccess}</p>}
+      {uploadError && <p style={{ color: 'red' }}>{uploadError}</p>}
     </div>
   );
 };
