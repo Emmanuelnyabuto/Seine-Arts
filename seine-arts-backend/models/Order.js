@@ -1,3 +1,5 @@
+// models/Order.js
+
 const mongoose = require('mongoose');
 
 const orderSchema = mongoose.Schema(
@@ -15,14 +17,14 @@ const orderSchema = mongoose.Schema(
       ref: 'User',
       required: true,
     },
-    paymentMethod: {
-      type: String,
-      required: false, // Make optional
+    assignedProfessional: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      default: null, // No professional assigned initially
     },
-    totalPrice: {
-      type: Number,
-      required: false, // Make optional
-      default: 0,
+    status: {
+      type: String,
+      default: 'Pending',
     },
   },
   {

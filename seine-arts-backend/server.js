@@ -2,10 +2,14 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const multer = require('multer'); // Add multer for file uploads
+const path = require('path');
+
 const contactRoutes = require('./routes/contactRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const userRoutes = require('./routes/userRoutes');
-const serviceRoutes = require('./routes/serviceRoutes'); // Import service routes
+const serviceRoutes = require('./routes/serviceRoutes');
+const portfolioRoutes = require('./routes/portfolioRoutes'); // Import portfolio routes
 
 dotenv.config();
 const app = express();
@@ -26,11 +30,27 @@ mongoose
   .then(() => console.log('MongoDB Connected'))
   .catch((err) => console.error('MongoDB Connection Error:', err));
 
+// Multer setup for file storage
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/'); // Define upload directory
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  },
+});
+
+const upload = multer({ storage });
+
+// Serve uploaded files statically
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 // Routes
 app.use('/api/contact', contactRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/users', userRoutes);
-app.use('/api/services', serviceRoutes); // Register services route
+app.use('/api/services', serviceRoutes);
+app.use('/api/portfolios', portfolioRoutes); // Register portfolio routes
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

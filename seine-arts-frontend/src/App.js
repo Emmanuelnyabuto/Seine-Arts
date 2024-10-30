@@ -11,6 +11,7 @@ import OrderService from './pages/OrderService';
 import ClientDashboard from './pages/ClientDashboard';
 import ProfessionalDashboard from './pages/ProfessionalDashboard';
 import ServicesPage from './pages/ServicesPage';
+import ContactPage from './pages/ContactPage'; // Import the ContactPage component
 import ProtectedRoute from './components/ProtectedRoute';
 
 const App = () => {
@@ -41,6 +42,7 @@ const App = () => {
           <Route path="/order/:serviceId" element={<OrderService />} />
           <Route path="/portfolios" element={<PortfolioPage />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/contact" element={<ContactPage />} /> {/* Add ContactPage route */}
 
           <Route
             path="/admin"

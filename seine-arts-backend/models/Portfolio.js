@@ -1,17 +1,24 @@
+// models/Portfolio.js
+
 const mongoose = require('mongoose');
 
 const portfolioSchema = mongoose.Schema(
   {
-    title: {
+    serviceCategory: {
       type: String,
       required: true,
     },
     description: {
       type: String,
-      required: true,
+      default: '',
     },
-    category: {
-      type: String,
+    media: {
+      type: [String], // Array of file paths or URLs to media files
+      default: [],
+    },
+    uploadedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
       required: true,
     },
   },

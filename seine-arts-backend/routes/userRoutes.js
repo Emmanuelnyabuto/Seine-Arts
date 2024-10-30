@@ -2,7 +2,7 @@ const express = require('express');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const { protect } = require('../middleware/authMiddleware');
+const { protect, admin } = require('../middleware/authMiddleware'); // Ensure admin middleware is imported
 
 const router = express.Router();
 
@@ -10,6 +10,23 @@ const router = express.Router();
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '30d' });
 };
+
+// Fetch users by role (e.g., professionals)
+router.get('/', protect, admin, async (req, res) => {
+  const { role } = req.query;
+
+  try {
+    if (role) {
+      const users = await User.find({ role });
+      res.json(users);
+    } else {
+      res.status(400).json({ message: 'Role parameter is required' });
+    }
+  } catch (error) {
+    console.error('Error fetching users:', error.message);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
 
 // User signup route
 router.post('/signup', async (req, res) => {

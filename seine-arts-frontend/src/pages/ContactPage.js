@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 const ContactPage = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     message: '',
   });
+  const [feedback, setFeedback] = useState('');
 
   const handleChange = (e) => {
     setFormData({
@@ -18,16 +21,19 @@ const ContactPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('/api/contact', formData);
-      alert('Message sent successfully!');
+      await axios.post(`${API_BASE_URL}/api/contact`, formData);
+      setFeedback('Message sent successfully!');
+      setFormData({ name: '', email: '', message: '' }); // Reset form
     } catch (error) {
       console.error('Error sending message', error);
+      setFeedback('Error sending message. Please try again.');
     }
   };
 
   return (
     <div className="contact-page">
       <h1>Contact Us</h1>
+      {feedback && <p>{feedback}</p>}
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="name">Name:</label>
