@@ -1,3 +1,5 @@
+// AdminDashboard.js
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -15,6 +17,7 @@ const AdminDashboard = () => {
   const [assignSuccess, setAssignSuccess] = useState('');
   const [assignError, setAssignError] = useState('');
 
+  // Fetch data on load
   useEffect(() => {
     const fetchServices = async () => {
       try {
@@ -101,6 +104,8 @@ const AdminDashboard = () => {
       await axios.put(`${API_BASE_URL}/api/orders/${orderId}/assign`, { professionalId }, config);
       setAssignSuccess('Order assigned successfully');
       setAssignError('');
+
+      // Refresh orders after assignment
       const updatedOrders = await axios.get(`${API_BASE_URL}/api/orders`, config);
       setOrders(updatedOrders.data);
     } catch (error) {
@@ -113,7 +118,8 @@ const AdminDashboard = () => {
   return (
     <div>
       <h1>Admin Dashboard</h1>
-      
+
+      {/* Upload Portfolio Section */}
       <section>
         <h2>Upload Portfolio</h2>
         <div>
@@ -152,6 +158,7 @@ const AdminDashboard = () => {
         {uploadError && <p style={{ color: 'red' }}>{uploadError}</p>}
       </section>
 
+      {/* Manage Orders Section */}
       <section>
         <h2>Manage Orders</h2>
         <div className="order-list">

@@ -17,12 +17,13 @@ const LoginPage = ({ setUser }) => {
     e.preventDefault();
     try {
       const response = await axios.post(`${API_BASE_URL}/api/users/login`, formData);
-      const { token, role, user } = response.data; // Expecting `user` data in response
+      const { token, role } = response.data;
       localStorage.setItem('authToken', token);
-      localStorage.setItem('userId', user._id); // Store user ID for order creation
-      setUser(response.data);
 
-      // Redirect based on role
+      // Parse token to get user data
+      const decodedUser = JSON.parse(atob(token.split('.')[1]));
+      setUser(decodedUser);
+
       if (role === 'admin') {
         navigate('/admin');
       } else if (role === 'professional') {

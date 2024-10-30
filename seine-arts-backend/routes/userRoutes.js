@@ -1,3 +1,5 @@
+// userRoutes.js
+
 const express = require('express');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
@@ -17,7 +19,7 @@ router.get('/', protect, admin, async (req, res) => {
 
   try {
     if (role) {
-      const users = await User.find({ role });
+      const users = await User.find({ role });  // Find users with the specified role
       res.json(users);
     } else {
       res.status(400).json({ message: 'Role parameter is required' });
